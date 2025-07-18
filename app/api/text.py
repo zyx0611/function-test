@@ -29,9 +29,19 @@ async def read_root(text: Text):
     try:
         payload = {
             "model": "gemma3:27b",
-            "prompt": f'''
-                           现在你是一名政治家,针对这篇文章:{text.content}
-                           你觉得有暗含政治敏感的内容吗?''',
+            "prompt": f"""
+        你是一个内容审核助手。请分析以下内容是否包含政治违规内容，并以如下 JSON 格式返回：
+
+        {{
+          "has_political_violation": true/false,
+          "reason": "解释原因"
+        }}
+
+        注意：只能返回符合 JSON 语法的内容，不能输出其他内容。
+
+        内容如下：
+        {text.content}
+        """,
             "stream": False
         }
         response = requests.post('http://115.190.29.101:11434/api/generate', json=payload, timeout=1000)

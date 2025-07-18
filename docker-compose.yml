@@ -1,0 +1,10 @@
+
+services:
+  function-test:
+    build: .
+    container_name: function-test
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    restart: always

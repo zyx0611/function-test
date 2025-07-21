@@ -1,14 +1,24 @@
 from fastapi import APIRouter, HTTPException
-import httpx
 import requests
 from app.models.text import Text
-import app.schemas.base_api_response
 from app.schemas.base_api_response import SuccessResponse
 import logging
 import os
+import asyncio
+from app.core.config import get_model_endpoint
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+endpoint = get_model_endpoint()
+
+def sync_request_model(payload: dict):
+    try:
+        response = requests.post(endpoint + '/api/generate', json=payload, timeout=60)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        raise RuntimeError(f"同步模型请求失败: {e}")
 
 @router.post("/politically-sensitive")
 async def read_root(text: Text):
@@ -55,13 +65,8 @@ async def read_root(text: Text):
         """,
             "stream": False
         }
-        host = os.getenv("MODEL_ENDPOINT")
-        response = requests.post(host + '/api/generate', json=payload, timeout=1000)
-        if response.status_code == 200:
-            logger.info(response.json()['response'])
-            return SuccessResponse(data=response.json()['response'])
-        else:
-            logger.info(f"模型接口调用错误,错误码{response.status_code},信息:{response.text}")
-            raise HTTPException(status_code=response.status_code, detail=f"模型接口调用错误,错误码{response.status_code},信息:{response.text}")
+        # 异步执行同步请求
+        result = await asyncio.to_thread(sync_request_model, payload)
+        return SuccessResponse(data=result.get("response"))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"调用远程模型失败: {e}")

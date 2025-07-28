@@ -80,14 +80,17 @@
                 "type": "object",
                 "properties": {
                   "amount": {
+                    "description": "变更金额：正数表示充值，负数表示消费。",
                     "example": 10,
                     "type": "integer"
                   },
                   "order_type": {
+                    "description": "订单类型：默认值1\n1-积分\n2-RMB",
                     "example": 1,
                     "type": "integer"
                   },
                   "order_way": {
+                    "description": "订单方式：默认值0\n1-支付宝\n2-微信\n3-银行卡",
                     "example": 1,
                     "type": "integer"
                   },
@@ -98,8 +101,6 @@
                 },
                 "required": [
                   "amount",
-                  "order_type",
-                  "order_way",
                   "user_name"
                 ]
               },
@@ -155,7 +156,7 @@
         "security": []
       }
     },
-    "/task_status": {
+    "/api/public/task_status": {
       "get": {
         "summary": "获取任务状态 API",
         "deprecated": false,
@@ -167,6 +168,37 @@
             "in": "query",
             "description": "",
             "required": false,
+            "example": "688729726da335440c6a7fed",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "{{$date.timestamp}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_key",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "AK-68A1835F47034385B693BFABB4B01505",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJydDAxIiwiZXhwIjoxNzU5MjAxNzQ5fQ.v4mBeR8b_qdppG72y2FfQQZVtf_7VCUkRBq2PyIgdEw",
             "schema": {
               "type": "string"
             }
@@ -468,6 +500,172 @@
         "security": []
       }
     },
+    "/api/public/aicomic_generate_images": {
+      "post": {
+        "summary": "AI文生图 API",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJydDAxIiwiZXhwIjoxNzU5MjAxNzQ5fQ.v4mBeR8b_qdppG72y2FfQQZVtf_7VCUkRBq2PyIgdEw",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/x-www-form-urlencoded",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "example": "body111",
+                    "type": "string"
+                  },
+                  "negative_prompt": {
+                    "example": "nnn1",
+                    "type": "string"
+                  },
+                  "model": {
+                    "example": "ponyxlv2",
+                    "type": "string"
+                  },
+                  "bid": {
+                    "example": "asdad",
+                    "type": "string"
+                  },
+                  "fee": {
+                    "example": "10",
+                    "type": "string"
+                  },
+                  "access_key": {
+                    "example": "{{access_key}}",
+                    "type": "string"
+                  },
+                  "timestamp": {
+                    "example": "{{timestamp}}",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "negative_prompt": {
+                          "type": "string"
+                        },
+                        "model": {
+                          "type": "string"
+                        },
+                        "bid": {
+                          "type": "string"
+                        },
+                        "fee": {
+                          "type": "string"
+                        },
+                        "user_id": {
+                          "type": "string"
+                        },
+                        "images": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "text",
+                        "negative_prompt",
+                        "model",
+                        "bid",
+                        "fee",
+                        "user_id",
+                        "images",
+                        "created_at",
+                        "updated_at"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 200,
+                  "message": "success",
+                  "data": {
+                    "id": "64f8a1b2c3d4e5f6a7b8c9d0",
+                    "text": "一个美丽的女孩在花园里",
+                    "negative_prompt": "模糊,低质量",
+                    "model": "ponyxlv2",
+                    "bid": "order_123",
+                    "fee": "10",
+                    "user_id": "64f8a1b2c3d4e5f6a7b8c9d1",
+                    "images": [],
+                    "created_at": "2024-01-15T10:30:00Z",
+                    "updated_at": "2024-01-15T10:30:00Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
     "/api/auth/token": {
       "post": {
         "summary": "登录",
@@ -589,191 +787,6 @@
                 "example": {
                   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJia2JrYmtiayIsImV4cCI6MTc2MDk1MDQ0Nn0.bIAcrgBmUmYCnmWzw2rRSP93dPvQxtgh3tebdEfLzxs",
                   "token_type": "bearer"
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/aicomic_generate_images": {
-      "post": {
-        "summary": "AI 文生图 API",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/public/image_style_transfer": {
-      "post": {
-        "summary": "图片风格转绘 API",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/public/image_inpaint_transfer": {
-      "post": {
-        "summary": "图片局部重绘 API",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/public/generate_image_controlnet_transfer": {
-      "post": {
-        "summary": " 图片涂鸦控制 API",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/public/generate_image_controlnet_inpaint": {
-      "post": {
-        "summary": "图片涂鸦重绘 API",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/public/image_upscale": {
-      "post": {
-        "summary": " 图片超清放大 API",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/public/image_upscale_fix": {
-      "post": {
-        "summary": "图片后期处理 API",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "source_path": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "source_path"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
                 }
               }
             },

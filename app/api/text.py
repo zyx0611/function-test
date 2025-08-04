@@ -3,7 +3,6 @@ import requests
 from app.models.text import Text
 from app.schemas.base_api_response import SuccessResponse
 import logging
-import os
 import asyncio
 from app.core.config import get_model_endpoint
 

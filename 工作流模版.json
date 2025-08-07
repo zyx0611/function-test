@@ -1,0 +1,110 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FRW- API测试",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/models/generate/process": {
+      "post": {
+        "summary": "使用工作流模版",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJydDAxIiwiZXhwIjoxNzU5MjAxNzQ5fQ.v4mBeR8b_qdppG72y2FfQQZVtf_7VCUkRBq2PyIgdEw",
+            "schema": {
+              "type": "string",
+              "default": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJydDAxIiwiZXhwIjoxNzU5MjAxNzQ5fQ.v4mBeR8b_qdppG72y2FfQQZVtf_7VCUkRBq2PyIgdEw"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "flow_name": {
+                    "description": "工作流名称，指定要执行的工作流处理名称",
+                    "example": "image_to_image2",
+                    "type": "string"
+                  },
+                  "source_urls": {
+                    "description": "源地址 URLs，格式为 JSON 字符串，例如：{\"source\":\"url地址\"}",
+                    "example": "",
+                    "type": "string"
+                  },
+                  "prompt_config\t": {
+                    "description": "提示词配置字典，格式为 JSON 字符串，用于指导生成内容",
+                    "example": "",
+                    "type": "string"
+                  },
+                  "latent_config\t": {
+                    "description": "latent 配置字典，格式为 JSON 字符串，用于控制图像潜在空间生成逻辑",
+                    "example": "",
+                    "type": "string"
+                  },
+                  "extra_config\t": {
+                    "description": "额外参数配置，格式为 JSON 字符串，用于传递其他自定义参数",
+                    "example": "",
+                    "type": "string"
+                  },
+                  "access_key": {
+                    "description": "API访问凭证，唯一识别访问用户，长度通常在20-30位左右,如：AK-4C9457F128C6405A655B5C3C7D89B8B66",
+                    "example": "{{access_key}}",
+                    "type": "string"
+                  },
+                  "secret_key": {
+                    "description": "API访问密钥，用于加密请求参数，避免请求参数被篡改，长度通常在30位以上，如：PRBUeSP_t-KL66Gr7AXRguX0TFartAvfK5McCCA7dGU",
+                    "example": "{{secret_key}}",
+                    "type": "string"
+                  },
+                  "timestamp": {
+                    "description": "时间戳，用来加密请求参数，生成签名验证。",
+                    "example": "{{timestamp}}",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "flow_name",
+                  "access_key",
+                  "secret_key",
+                  "timestamp"
+                ]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
